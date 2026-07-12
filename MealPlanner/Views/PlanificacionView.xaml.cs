@@ -135,24 +135,38 @@ namespace MealPlanner.Views
             GenerarCalendario();
         }
 
-        private void BorderDia_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private async void BorderDia_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (sender is FrameworkElement element && element.DataContext is CalendarioDiaViewModel diaVm)
             {
-                // This will be implemented in the next step (Dialog)
-                // MessageBox.Show($"Día seleccionado: {diaVm.Fecha.ToShortDateString()}");
-                AbrirDialogoAsignacion(diaVm.Fecha);
+                await MostrarDetalleYAsignacion(diaVm.Fecha);
             }
         }
 
-        private async void AbrirDialogoAsignacion(DateTime fecha)
+        private async System.Threading.Tasks.Task MostrarDetalleYAsignacion(DateTime fecha)
         {
-            var dialog = new AsignarComidaDialog(fecha);
-            var result = await DialogHost.Show(dialog, "RootDialog");
+            var detalleDialog = new DetalleDiaDialog(fecha);
+            var result = await DialogHost.Show(detalleDialog, "RootDialog");
 
-            if (result is bool wasAdded && wasAdded)
+            // If the user closed or deleted items, we might need to refresh
+            if (detalleDialog.NeedsRefresh || (result as string == "CERRAR"))
             {
                 GenerarCalendario();
+            }
+
+            // If the user clicked "+ AGREGAR COMIDA"
+            if (result as string == "AGREGAR")
+            {
+                var asignarDialog = new AsignarComidaDialog(fecha);
+                var addResult = await DialogHost.Show(asignarDialog, "RootDialog");
+
+                if (addResult is bool wasAdded && wasAdded)
+                {
+                    GenerarCalendario();
+                }
+
+                // Re-open detail dialog so they can see the new item or continue managing the day
+                await MostrarDetalleYAsignacion(fecha);
             }
         }
     }
