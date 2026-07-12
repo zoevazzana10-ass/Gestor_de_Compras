@@ -68,7 +68,7 @@
                             <ItemsControl Grid.Row="1" ItemsSource="{Binding Comidas}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Background="{DynamicResource MaterialDesignPrimaryBrush}" CornerRadius="2" Margin="0,2,0,0" Padding="2">
+                                        <Border Background="{Binding BackgroundColor}" CornerRadius="2" Margin="0,2,0,0" Padding="2">
                                             <TextBlock Text="{Binding InfoCorto}" FontSize="10" Foreground="White" TextTrimming="CharacterEllipsis" ToolTip="{Binding InfoLargo}"/>
                                         </Border>
                                     </DataTemplate>

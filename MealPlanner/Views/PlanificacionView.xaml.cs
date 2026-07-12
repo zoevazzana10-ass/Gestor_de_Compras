@@ -28,6 +28,21 @@ namespace MealPlanner.Views
         public string NombreComida { get; set; } = string.Empty;
         public string InfoCorto => $"{(TiempoComida.Length >= 3 ? TiempoComida.Substring(0, 3) : TiempoComida)}: {NombreComida}";
         public string InfoLargo => $"{TiempoComida}: {NombreComida}";
+
+        public System.Windows.Media.Brush BackgroundColor
+        {
+            get
+            {
+                return TiempoComida switch
+                {
+                    "Desayuno" => System.Windows.Media.Brushes.MediumSeaGreen,
+                    "Almuerzo" => System.Windows.Media.Brushes.DarkOrange,
+                    "Merienda" => System.Windows.Media.Brushes.SkyBlue,
+                    "Cena" => System.Windows.Media.Brushes.HotPink,
+                    _ => System.Windows.Media.Brushes.Gray
+                };
+            }
+        }
     }
 
     public partial class PlanificacionView : UserControl
