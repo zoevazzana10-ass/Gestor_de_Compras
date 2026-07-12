@@ -4,32 +4,80 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:MealPlanner.Views"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:BoolToColorConverter x:Key="BoolToColorConverter" />
+        <local:BooleanToFontWeightConverter x:Key="BooleanToFontWeightConverter" />
+    </UserControl.Resources>
+
     <Grid Margin="16">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
-            <DatePicker x:Name="dpFecha" materialDesign:HintAssist.Hint="Fecha" Width="150" Margin="0,0,16,0" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
-            <ComboBox x:Name="cmbTiempo" materialDesign:HintAssist.Hint="Tiempo de Comida" Width="150" Margin="0,0,16,0" Style="{StaticResource MaterialDesignFloatingHintComboBox}">
-                <ComboBoxItem Content="Desayuno" IsSelected="True" />
-                <ComboBoxItem Content="Almuerzo" />
-                <ComboBoxItem Content="Merienda" />
-                <ComboBoxItem Content="Cena" />
-            </ComboBox>
-            <ComboBox x:Name="cmbComidas" DisplayMemberPath="Nombre" materialDesign:HintAssist.Hint="Comida a asignar" Width="200" Margin="0,0,16,0" Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
-            <Button x:Name="btnAgregarPlan" Content="ASIGNAR" Click="btnAgregarPlan_Click" VerticalAlignment="Bottom" />
-        </StackPanel>
+        <!-- Header Controls -->
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="txtMesAnio" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Content="&lt;" Width="40" Margin="0,0,8,0" Click="btnMesAnterior_Click" />
+                <Button Content="Hoy" Margin="0,0,8,0" Click="btnHoy_Click" />
+                <Button Content="&gt;" Width="40" Click="btnMesSiguiente_Click" />
+            </StackPanel>
+        </Grid>
 
-        <DataGrid Grid.Row="1" x:Name="dgPlanificacion" AutoGenerateColumns="False" CanUserAddRows="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha, StringFormat=d}" Width="*" />
-                <DataGridTextColumn Header="Tiempo" Binding="{Binding TiempoComida}" Width="*" />
-                <DataGridTextColumn Header="Comida" Binding="{Binding Comida.Nombre}" Width="*" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <!-- Days of Week Header -->
+        <UniformGrid Grid.Row="1" Columns="7" Margin="0,0,0,8">
+            <TextBlock Text="Lun" FontWeight="Bold" TextAlignment="Center" />
+            <TextBlock Text="Mar" FontWeight="Bold" TextAlignment="Center" />
+            <TextBlock Text="Mié" FontWeight="Bold" TextAlignment="Center" />
+            <TextBlock Text="Jue" FontWeight="Bold" TextAlignment="Center" />
+            <TextBlock Text="Vie" FontWeight="Bold" TextAlignment="Center" />
+            <TextBlock Text="Sáb" FontWeight="Bold" TextAlignment="Center" />
+            <TextBlock Text="Dom" FontWeight="Bold" TextAlignment="Center" />
+        </UniformGrid>
+
+        <!-- Calendar Grid -->
+        <ItemsControl Grid.Row="2" x:Name="icCalendario">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="7" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="0.5" Background="Transparent"
+                            MouseLeftButtonUp="BorderDia_MouseLeftButtonUp" Cursor="Hand" Margin="1">
+                        <Grid Margin="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="{Binding DiaNumero}" FontWeight="{Binding IsHoy, Converter={StaticResource BooleanToFontWeightConverter}}"
+                                       Foreground="{Binding IsCurrentMonth, Converter={StaticResource BoolToColorConverter}}"
+                                       HorizontalAlignment="Right" />
+
+                            <ItemsControl Grid.Row="1" ItemsSource="{Binding Comidas}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{DynamicResource MaterialDesignPrimaryBrush}" CornerRadius="2" Margin="0,2,0,0" Padding="2">
+                                            <TextBlock Text="{Binding InfoCorto}" FontSize="10" Foreground="White" TextTrimming="CharacterEllipsis" ToolTip="{Binding InfoLargo}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>
