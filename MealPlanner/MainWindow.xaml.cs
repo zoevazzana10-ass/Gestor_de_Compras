@@ -47,5 +47,14 @@ public partial class MainWindow : Window
                 MainContentControl.Content = _listaComprasView;
                 break;
         }
+
+        if (MainDrawer != null)
+        {
+            MainDrawer.IsLeftDrawerOpen = false;
+            if (MenuToggleButton != null)
+            {
+                MenuToggleButton.IsChecked = false;
+            }
+        }
     }
 }

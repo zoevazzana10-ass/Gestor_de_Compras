@@ -16,65 +16,77 @@
         FontFamily="{DynamicResource MaterialDesignFont}">
 
     <materialDesign:DialogHost Identifier="RootDialog" DialogTheme="Inherit">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="250" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <materialDesign:DrawerHost x:Name="MainDrawer" IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+            <materialDesign:DrawerHost.LeftDrawerContent>
+                <!-- Menú Lateral Deslizable -->
+                <Border Width="250" Background="{DynamicResource MaterialDesignDarkBackground}" TextElement.Foreground="{DynamicResource MaterialDesignDarkForeground}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-            <!-- Sidebar -->
-            <Border Grid.Column="0" Background="{DynamicResource MaterialDesignDarkBackground}" TextElement.Foreground="{DynamicResource MaterialDesignDarkForeground}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                        <TextBlock Text="Meal Planner" FontSize="22" FontWeight="Bold" Margin="16,24,16,24" HorizontalAlignment="Center"/>
 
-                    <TextBlock Text="Meal Planner" FontSize="22" FontWeight="Bold" Margin="16,24,16,24" HorizontalAlignment="Center"/>
+                        <ListBox Grid.Row="1" x:Name="MenuListBox" SelectionChanged="MenuListBox_SelectionChanged" Background="Transparent" BorderThickness="0" SelectedIndex="0">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                                    <Setter Property="Padding" Value="16,12" />
+                                </Style>
+                            </ListBox.ItemContainerStyle>
 
-                    <ListBox Grid.Row="1" x:Name="MenuListBox" SelectionChanged="MenuListBox_SelectionChanged" Background="Transparent" BorderThickness="0" SelectedIndex="0">
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
-                                <Setter Property="Padding" Value="16,12" />
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-
-                        <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="CalendarMonth" Width="24" Height="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="Planificación" FontSize="16" VerticalAlignment="Center" />
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="FoodApple" Width="24" Height="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="Comidas" FontSize="16" VerticalAlignment="Center" />
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="ChefHat" Width="24" Height="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="Recetas" FontSize="16" VerticalAlignment="Center" />
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Scale" Width="24" Height="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="Ingredientes" FontSize="16" VerticalAlignment="Center" />
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="CartOutline" Width="24" Height="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="Lista de Compras" FontSize="16" VerticalAlignment="Center" />
-                            </StackPanel>
-                        </ListBoxItem>
-                    </ListBox>
-                </Grid>
-            </Border>
+                            <ListBoxItem>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="CalendarMonth" Width="24" Height="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Planificación" FontSize="16" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="FoodApple" Width="24" Height="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Comidas" FontSize="16" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="ChefHat" Width="24" Height="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Recetas" FontSize="16" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Scale" Width="24" Height="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Ingredientes" FontSize="16" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="CartOutline" Width="24" Height="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Lista de Compras" FontSize="16" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </ListBoxItem>
+                        </ListBox>
+                    </Grid>
+                </Border>
+            </materialDesign:DrawerHost.LeftDrawerContent>
 
             <!-- Contenido Principal -->
-            <ContentControl Grid.Column="1" x:Name="MainContentControl" />
-        </Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <materialDesign:ColorZone Mode="PrimaryMid" Padding="16" Grid.Row="0">
+                    <DockPanel>
+                        <ToggleButton x:Name="MenuToggleButton" Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                                      IsChecked="False" Margin="0,0,16,0" Foreground="{DynamicResource MaterialDesignDarkForeground}" />
+                        <TextBlock VerticalAlignment="Center" FontSize="22" Text="Meal Planner" />
+                    </DockPanel>
+                </materialDesign:ColorZone>
+
+                <ContentControl Grid.Row="1" x:Name="MainContentControl" />
+            </Grid>
+        </materialDesign:DrawerHost>
     </materialDesign:DialogHost>
 </Window>
