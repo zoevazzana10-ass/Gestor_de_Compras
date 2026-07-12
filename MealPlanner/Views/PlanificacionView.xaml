@@ -27,57 +27,75 @@
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="txtMesAnio" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" />
             <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <ComboBox x:Name="cmbVista" Width="100" Margin="0,0,16,0" VerticalAlignment="Center" SelectionChanged="cmbVista_SelectionChanged">
+                    <ComboBoxItem Content="Mes" IsSelected="True" />
+                    <ComboBoxItem Content="Semana" />
+                </ComboBox>
                 <Button Content="&lt;" Width="40" Margin="0,0,8,0" Click="btnMesAnterior_Click" />
                 <Button Content="Hoy" Margin="0,0,8,0" Click="btnHoy_Click" />
                 <Button Content="&gt;" Width="40" Click="btnMesSiguiente_Click" />
             </StackPanel>
         </Grid>
 
-        <!-- Days of Week Header -->
-        <UniformGrid Grid.Row="1" Columns="7" Margin="0,0,0,8">
-            <TextBlock Text="Lun" FontWeight="Bold" TextAlignment="Center" />
-            <TextBlock Text="Mar" FontWeight="Bold" TextAlignment="Center" />
-            <TextBlock Text="Mié" FontWeight="Bold" TextAlignment="Center" />
-            <TextBlock Text="Jue" FontWeight="Bold" TextAlignment="Center" />
-            <TextBlock Text="Vie" FontWeight="Bold" TextAlignment="Center" />
-            <TextBlock Text="Sáb" FontWeight="Bold" TextAlignment="Center" />
-            <TextBlock Text="Dom" FontWeight="Bold" TextAlignment="Center" />
-        </UniformGrid>
+        <!-- Contenedor Vista Mensual -->
+        <Grid Grid.Row="1" Grid.RowSpan="2" x:Name="GridVistaMensual">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <!-- Calendar Grid -->
-        <ItemsControl Grid.Row="2" x:Name="icCalendario">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="7" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="0.5" Background="Transparent"
-                            MouseLeftButtonUp="BorderDia_MouseLeftButtonUp" Cursor="Hand" Margin="1">
-                        <Grid Margin="4">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
+            <!-- Days of Week Header -->
+            <UniformGrid Grid.Row="0" Columns="7" Margin="0,0,0,8">
+                <TextBlock Text="Lun" FontWeight="Bold" TextAlignment="Center" />
+                <TextBlock Text="Mar" FontWeight="Bold" TextAlignment="Center" />
+                <TextBlock Text="Mié" FontWeight="Bold" TextAlignment="Center" />
+                <TextBlock Text="Jue" FontWeight="Bold" TextAlignment="Center" />
+                <TextBlock Text="Vie" FontWeight="Bold" TextAlignment="Center" />
+                <TextBlock Text="Sáb" FontWeight="Bold" TextAlignment="Center" />
+                <TextBlock Text="Dom" FontWeight="Bold" TextAlignment="Center" />
+            </UniformGrid>
 
-                            <TextBlock Text="{Binding DiaNumero}" FontWeight="{Binding IsHoy, Converter={StaticResource BooleanToFontWeightConverter}}"
-                                       Foreground="{Binding IsCurrentMonth, Converter={StaticResource BoolToColorConverter}}"
-                                       HorizontalAlignment="Right" />
+            <!-- Calendar Grid -->
+            <ItemsControl Grid.Row="1" x:Name="icCalendario">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="7" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="0.5" Background="Transparent"
+                                MouseLeftButtonUp="BorderDia_MouseLeftButtonUp" Cursor="Hand" Margin="1">
+                            <Grid Margin="4">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
 
-                            <ItemsControl Grid.Row="1" ItemsSource="{Binding Comidas}" ClipToBounds="True">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Background="{Binding BackgroundColor}" CornerRadius="2" Margin="0,2,0,0" Padding="2">
-                                            <TextBlock Text="{Binding InfoCorto}" FontSize="10" Foreground="White" TextTrimming="CharacterEllipsis" ToolTip="{Binding InfoLargo}"/>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                                <TextBlock Text="{Binding DiaNumero}" FontWeight="{Binding IsHoy, Converter={StaticResource BooleanToFontWeightConverter}}"
+                                           Foreground="{Binding IsCurrentMonth, Converter={StaticResource BoolToColorConverter}}"
+                                           HorizontalAlignment="Right" />
+
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding Comidas}" ClipToBounds="True">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="{Binding BackgroundColor}" CornerRadius="2" Margin="0,2,0,0" Padding="2">
+                                                <TextBlock Text="{Binding InfoCorto}" FontSize="10" Foreground="White" TextTrimming="CharacterEllipsis" ToolTip="{Binding InfoLargo}"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+
+        <!-- Contenedor Vista Semanal (Matriz) -->
+        <Grid Grid.Row="1" Grid.RowSpan="2" x:Name="GridVistaSemanal" Visibility="Collapsed">
+            <!-- El contenido se generará desde el Code-Behind (GenerarCalendarioSemanal) para crear las filas y columnas -->
+            <Grid x:Name="gridLayoutSemana" />
+        </Grid>
     </Grid>
 </UserControl>
