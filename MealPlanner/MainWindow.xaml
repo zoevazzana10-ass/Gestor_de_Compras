@@ -15,29 +15,66 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}">
 
-    <Grid>
-        <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryMid"
-                    Style="{StaticResource MaterialDesignFilledTabControl}">
-            <TabItem Header="Planificación">
+    <materialDesign:DialogHost Identifier="RootDialog" DialogTheme="Inherit">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Sidebar -->
+            <Border Grid.Column="0" Background="{DynamicResource MaterialDesignDarkBackground}" TextElement.Foreground="{DynamicResource MaterialDesignDarkForeground}">
                 <Grid>
-                    <views:PlanificacionView />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Meal Planner" FontSize="22" FontWeight="Bold" Margin="16,24,16,24" HorizontalAlignment="Center"/>
+
+                    <ListBox Grid.Row="1" x:Name="MenuListBox" SelectionChanged="MenuListBox_SelectionChanged" Background="Transparent" BorderThickness="0" SelectedIndex="0">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                                <Setter Property="Padding" Value="16,12" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="CalendarMonth" Width="24" Height="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Planificación" FontSize="16" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="FoodApple" Width="24" Height="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Comidas" FontSize="16" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ChefHat" Width="24" Height="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Recetas" FontSize="16" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Scale" Width="24" Height="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Ingredientes" FontSize="16" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="CartOutline" Width="24" Height="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Lista de Compras" FontSize="16" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </ListBoxItem>
+                    </ListBox>
                 </Grid>
-            </TabItem>
-            <TabItem Header="Comidas y Recetas">
-                <Grid>
-                    <views:ComidasView />
-                </Grid>
-            </TabItem>
-            <TabItem Header="Ingredientes">
-                <Grid>
-                    <views:IngredientesView />
-                </Grid>
-            </TabItem>
-            <TabItem Header="Lista de Compras">
-                <Grid>
-                    <views:ListaComprasView />
-                </Grid>
-            </TabItem>
-        </TabControl>
-    </Grid>
+            </Border>
+
+            <!-- Contenido Principal -->
+            <ContentControl Grid.Column="1" x:Name="MainContentControl" />
+        </Grid>
+    </materialDesign:DialogHost>
 </Window>

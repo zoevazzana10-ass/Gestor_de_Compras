@@ -1,0 +1,56 @@
+<UserControl x:Class="MealPlanner.Views.AsignarComidaDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             Width="400" Height="500">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="txtTitulo" FontSize="20" FontWeight="Bold" Margin="0,0,0,16" />
+
+        <Grid Grid.Row="1" Margin="0,0,0,16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <ComboBox x:Name="cmbTiempoComida" materialDesign:HintAssist.Hint="Tiempo de Comida" Margin="0,0,0,8" Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                <ComboBoxItem Content="Desayuno" />
+                <ComboBoxItem Content="Almuerzo" />
+                <ComboBoxItem Content="Merienda" />
+                <ComboBoxItem Content="Cena" />
+            </ComboBox>
+
+            <Grid Grid.Row="1" Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ComboBox x:Name="cmbFiltroCategoria" materialDesign:HintAssist.Hint="Filtrar por Categoría" Margin="0,0,8,0" Style="{StaticResource MaterialDesignFloatingHintComboBox}" SelectionChanged="Filtro_Changed" />
+                <ComboBox x:Name="cmbFiltroTemperatura" Grid.Column="1" materialDesign:HintAssist.Hint="Filtrar por Temp." Style="{StaticResource MaterialDesignFloatingHintComboBox}" SelectionChanged="Filtro_Changed">
+                    <ComboBoxItem Content="Todas" />
+                    <ComboBoxItem Content="Caliente" />
+                    <ComboBoxItem Content="Frio" />
+                </ComboBox>
+            </Grid>
+
+            <TextBox Grid.Row="2" x:Name="txtBuscar" materialDesign:HintAssist.Hint="Buscar comida..." Style="{StaticResource MaterialDesignFloatingHintTextBox}" TextChanged="Filtro_Changed" />
+        </Grid>
+
+        <ListBox Grid.Row="2" x:Name="lbComidas" DisplayMemberPath="Nombre" Margin="0,0,0,16" />
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="CANCELAR" Style="{StaticResource MaterialDesignFlatButton}" Margin="0,0,8,0" Click="btnCancelar_Click" />
+            <Button Content="GUARDAR" Click="btnGuardar_Click" />
+        </StackPanel>
+    </Grid>
+</UserControl>

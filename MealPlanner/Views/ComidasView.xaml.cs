@@ -19,7 +19,7 @@ namespace MealPlanner.Views
         private void ComidasView_Loaded(object sender, RoutedEventArgs e)
         {
             CargarComidas();
-            CargarComboIngredientes();
+            CargarCategorias();
         }
 
         private void CargarComidas()
@@ -31,11 +31,16 @@ namespace MealPlanner.Views
             }
         }
 
-        private void CargarComboIngredientes()
+        private void CargarCategorias()
         {
             using (var context = new AppDbContext())
             {
-                cmbIngredientes.ItemsSource = context.Ingredientes.ToList();
+                var categorias = context.Comidas
+                    .Select(c => c.Categoria)
+                    .Distinct()
+                    .Where(c => !string.IsNullOrEmpty(c))
+                    .ToList();
+                cmbCategoriaComida.ItemsSource = categorias;
             }
         }
 
@@ -50,7 +55,7 @@ namespace MealPlanner.Views
             var nuevaComida = new Comida
             {
                 Nombre = txtNombreComida.Text,
-                Categoria = txtCategoriaComida.Text,
+                Categoria = cmbCategoriaComida.Text,
                 Temperatura = (cmbTemperatura.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "Caliente"
             };
 
@@ -61,70 +66,9 @@ namespace MealPlanner.Views
             }
 
             txtNombreComida.Clear();
-            txtCategoriaComida.Clear();
+            cmbCategoriaComida.Text = "";
             CargarComidas();
-        }
-
-        private void dgComidas_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var comida = dgComidas.SelectedItem as Comida;
-            if (comida != null)
-            {
-                txtTituloReceta.Text = $"Receta: {comida.Nombre}";
-                CargarReceta(comida.Id);
-            }
-            else
-            {
-                txtTituloReceta.Text = "Receta (Seleccione comida)";
-                dgReceta.ItemsSource = null;
-            }
-        }
-
-        private void CargarReceta(int comidaId)
-        {
-            using (var context = new AppDbContext())
-            {
-                var receta = context.Recetas
-                    .Include(r => r.Ingrediente)
-                    .Where(r => r.ComidaId == comidaId)
-                    .ToList();
-                dgReceta.ItemsSource = receta;
-            }
-        }
-
-        private void btnAgregarIngredienteReceta_Click(object sender, RoutedEventArgs e)
-        {
-            var comida = dgComidas.SelectedItem as Comida;
-            var ingrediente = cmbIngredientes.SelectedItem as Ingrediente;
-
-            if (comida == null || ingrediente == null)
-            {
-                MessageBox.Show("Seleccione una comida y un ingrediente.");
-                return;
-            }
-
-            if (!decimal.TryParse(txtCantidad.Text, out decimal cantidad))
-            {
-                MessageBox.Show("Ingrese una cantidad válida.");
-                return;
-            }
-
-            var nuevaReceta = new Receta
-            {
-                ComidaId = comida.Id,
-                IngredienteId = ingrediente.Id,
-                Cantidad = cantidad
-            };
-
-            using (var context = new AppDbContext())
-            {
-                context.Recetas.Add(nuevaReceta);
-                context.SaveChanges();
-            }
-
-            txtCantidad.Clear();
-            cmbIngredientes.SelectedItem = null;
-            CargarReceta(comida.Id);
+            CargarCategorias();
         }
     }
 }
