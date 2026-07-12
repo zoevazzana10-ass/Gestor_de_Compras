@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MealPlanner.Tests/MealPlanner.Tests.csproj" />
+  <Project Path="MealPlanner/MealPlanner.csproj" />
+</Solution>
