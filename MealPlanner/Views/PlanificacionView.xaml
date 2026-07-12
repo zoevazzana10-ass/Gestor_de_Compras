@@ -65,7 +65,7 @@
                                        Foreground="{Binding IsCurrentMonth, Converter={StaticResource BoolToColorConverter}}"
                                        HorizontalAlignment="Right" />
 
-                            <ItemsControl Grid.Row="1" ItemsSource="{Binding Comidas}">
+                            <ItemsControl Grid.Row="1" ItemsSource="{Binding Comidas}" ClipToBounds="True">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border Background="{Binding BackgroundColor}" CornerRadius="2" Margin="0,2,0,0" Padding="2">
