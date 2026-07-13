@@ -6,9 +6,12 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="Teal" SecondaryColor="Lime" />
+                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="#FCE9AB" SecondaryColor="#FCE9AB" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <!-- Sobrescribir el color de texto de botones principales para que sea negro -->
+            <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="Black" />
+            <SolidColorBrush x:Key="SecondaryHueMidForegroundBrush" Color="Black" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
